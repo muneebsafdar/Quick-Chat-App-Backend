@@ -8,7 +8,12 @@ export const authMiddleware = async (req: Request, res: Response,next:NextFuncti
         if(!token){
             return res.status(401).json({message:"Unauthorized"})
         }
-        const decodedToken = jwt.verify(token,process.env.JWT_SECRET as string)
+        const decodedToken = jwt.verify(token,process.env.JWT_SECRET as string,(err,user)=>{
+            if (err){
+                return res.status(401).json({message:"Unauthorized"})
+            }
+            req.user = user as AuthUser | undefined
+        })
         next()
     } catch (error) {
         return res.status(500).json({message:"Internal server error"})
