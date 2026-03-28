@@ -6,8 +6,6 @@ export const createChatGroup = async (req: Request, res: Response) => {
         const body=req.body
         const user=req.user as AuthUser
 
-        console.log(body)
-
         const response = await prisma.chatGroup.create({
             data:{
                 title:body.title,
@@ -18,7 +16,7 @@ export const createChatGroup = async (req: Request, res: Response) => {
 
         res.status(200).json({
             message:"Group created successfully",
-            response
+            data:response
         })
     } catch (error) {
         return res.status(500).json({message:"Internal server error"})
